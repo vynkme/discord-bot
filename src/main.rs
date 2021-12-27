@@ -1,15 +1,11 @@
 use dotenv::dotenv;
 use serenity::async_trait;
 use serenity::client::{Client, Context, EventHandler};
-use serenity::framework::standard::{
-    macros::{command, group},
-    CommandResult, StandardFramework,
-};
-use serenity::model::{
-    channel::Message,
-    gateway::{Activity, Ready},
-};
+use serenity::framework::standard::{macros::group, StandardFramework};
+use serenity::model::gateway::{Activity, Ready};
 use std::env;
+mod commands;
+use commands::ping::*;
 #[group]
 #[commands(ping)]
 struct General;
@@ -28,7 +24,7 @@ impl EventHandler for Handler {
 async fn main() {
     dotenv().ok();
     let framework = StandardFramework::new()
-        .configure(|c| c.prefix(".")) // set the bot's prefix to "~"
+        .configure(|c| c.prefix("?"))
         .group(&GENERAL_GROUP);
 
     // Login with a bot token from the environment
@@ -43,11 +39,4 @@ async fn main() {
     if let Err(why) = client.start().await {
         println!("An error occurred while running the client: {:?}", why);
     }
-}
-
-#[command]
-async fn ping(ctx: &Context, msg: &Message) -> CommandResult {
-    msg.reply(ctx, "Pong!").await?;
-
-    Ok(())
 }
