@@ -5,9 +5,9 @@ use serenity::framework::standard::{macros::group, StandardFramework};
 use serenity::model::gateway::{Activity, Ready};
 use std::env;
 mod commands;
-use commands::ping::*;
+use commands::{ping::*,sus::*};
 #[group]
-#[commands(ping)]
+#[commands(ping,sus)]
 struct General;
 
 struct Handler;
