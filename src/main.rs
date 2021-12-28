@@ -5,9 +5,10 @@ use serenity::framework::standard::{macros::group, StandardFramework};
 use serenity::model::gateway::{Activity, Ready};
 use std::env;
 mod commands;
-use commands::{ping::*,sus::*};
+use commands::ping::*;
+use serenity::model::channel::Message;
 #[group]
-#[commands(ping,sus)]
+#[commands(ping)]
 struct General;
 
 struct Handler;
@@ -17,6 +18,15 @@ impl EventHandler for Handler {
     async fn ready(&self, ctx: Context, ready: Ready) {
         println!("Logged in as {}", ready.user.name);
         ctx.set_activity(Activity::playing("Rust")).await;
+    }
+    async fn message(&self, ctx: Context, msg: Message) {
+        if msg.author.bot != true {
+            if msg.content == "sus" {
+                if let Err(why) = msg.reply(ctx, "ඞඞඞඞඞඞඞඞ").await {
+                    println!("Error Sending Message {}", why);
+                }
+            }
+        }
     }
 }
 
